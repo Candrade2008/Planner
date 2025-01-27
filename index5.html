@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily & Week Planner</title>
+  <link rel="stylesheet" href="style3.css">
+  <link rel="icon" type="image/x-icon"  href="favicon.ico">
+
+</head>
+<body>
+
+<div class="planner-container">
+
+  <!-- Week Planner -->
+  <div class="week-planner">
+    <h1>Week Planner</h1>
+    <ul class="week-days">
+      <button onclick="setDay('Monday')">Monday</button>
+      <button onclick="setDay('Tuesday')">Tuesday</button>
+      <button onclick="setDay('Wednesday')">Wednesday</button>
+      <button onclick="setDay('Thursday')">Thursday</button>
+      <button onclick="setDay('Friday')">Friday</button>
+      <button onclick="setDay('Saturday')">Saturday</button>
+      <button onclick="setDay('Sunday')">Sunday</button>
+    </ul>
+    <!-- Important Tasks -->
+     <div class="important-tasks-container">
+        <h2>Important Tasks</h2>
+        <div id="important-tasks-list"></div>
+        <button class="add-important-task-btn" onclick="addImportantTask()">Add Important Task</button>
+  </div>
+  
+  </div>
+
+  <!-- Daily Planner -->
+  <div class="daily-planner">
+    <h1 id="current-day">Daily Planner</h1>
+    <ul id="task-container" class="task-list"></ul>
+    <button class="add-task-btn" onclick="addTask()">Add Task</button>
+    <button class="save-btn" onclick="saveTasks()">Save Tasks</button>
+  </div>
+  
+</div>
+
+<script>
+ let currentDay = 'Monday';  // Default day to show in daily planner
+  const weekTasks = {
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: []
+  };
+
+  function setDay(day) {
+    currentDay = day;
+    document.getElementById('current-day').innerText = `${day} Planner`;
+    loadTasks();
+  }
+
+  function addTask(time = '', extraTime = '', taskText = '', subtasks = [], importance = 0) {
+  const taskContainer = document.getElementById('task-container');
+  const taskItem = document.createElement('li');
+  taskItem.classList.add('task-item');
+
+  // First row with two time inputs
+  const timeInput = document.createElement('input');
+  timeInput.type = 'time';
+  timeInput.value = time;
+  timeInput.classList.add('task-time');
+
+  const extraTimeInput = document.createElement('input');
+  extraTimeInput.type = 'time';
+  extraTimeInput.value = extraTime;
+  extraTimeInput.classList.add('extra-task-time');
+
+  const timeRow = document.createElement('div');
+  timeRow.classList.add('time-row');
+  timeRow.appendChild(timeInput);
+  timeRow.appendChild(extraTimeInput);
+
+  // Importance input
+  const importanceInput = document.createElement('input');
+  importanceInput.type = 'number';
+  importanceInput.value = importance;
+  importanceInput.placeholder = '1-5';
+  importanceInput.classList.add('importance-input');
+
+  const importanceDiv = document.createElement('div');
+  importanceDiv.classList.add('importance-div');
+  importanceDiv.appendChild(importanceInput);
+
+  // Second row with task checkbox and title
+  const taskCheckbox = document.createElement('input');
+  taskCheckbox.type = 'checkbox';
+  taskCheckbox.onclick = function () {
+    if (taskCheckbox.checked) {
+      taskItem.classList.add('completed');
+    } else {
+      taskItem.classList.remove('completed');
+    }
+  };
+
+  const taskInput = document.createElement('input');
+  taskInput.type = 'text';
+  taskInput.value = taskText;
+  taskInput.placeholder = 'Task name';
+  taskInput.classList.add('task-input');
+
+  const taskRow = document.createElement('div');
+  taskRow.classList.add('task-row');
+  taskRow.appendChild(taskCheckbox);
+  taskRow.appendChild(taskInput);
+  
+
+  
+
+
+  // Append time row, task row, importance, and delete button to task item
+  taskItem.appendChild(timeRow);
+  taskItem.appendChild(importanceDiv);
+  taskItem.appendChild(taskRow);
+  
+
+  // Subtasks handling
+  const subtaskList = document.createElement('ul');
+  subtaskList.classList.add('subtask-list');
+
+  subtasks.forEach(subtask => {
+    addSubtask(subtaskList, subtask.text, subtask.completed);
+  });
+
+  const addSubtaskBtn = document.createElement('button');
+  addSubtaskBtn.innerText = 'Add Subtask';
+  addSubtaskBtn.classList.add('subtask-btn')
+  addSubtaskBtn.onclick = function () {
+    addSubtask(subtaskList);
+  };
+  // Delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'Delete';
+  deleteBtn.classList.add('delete-btn');
+  deleteBtn.onclick = function () {
+    taskItem.remove();  // Remove the task from the DOM
+    saveTasks();  // Save the updated list
+  };
+
+  
+
+  taskItem.appendChild(subtaskList);
+  taskItem.appendChild(addSubtaskBtn);
+  taskItem.appendChild(deleteBtn);
+
+  taskContainer.appendChild(taskItem);
+  
+
+}
+
+
+
+
+
+ 
+
+  function addSubtask(subtaskList, subtaskText = '', isCompleted = false) {
+    const subtaskItem = document.createElement('li');
+    const subtaskInput = document.createElement('input');
+    subtaskInput.type = 'text';
+    subtaskInput.value = subtaskText;
+    subtaskInput.placeholder = 'Subtask name';
+
+    const subtaskCheckbox = document.createElement('input');
+    subtaskCheckbox.type = 'checkbox';
+    subtaskCheckbox.checked = isCompleted;
+    subtaskCheckbox.onclick = function () {
+      if (subtaskCheckbox.checked) {
+        subtaskItem.classList.add('completed');
+      } else {
+        subtaskItem.classList.remove('completed');
+      }
+    };
+
+    if (isCompleted) {
+      subtaskItem.classList.add('completed');
+    }
+
+    subtaskItem.appendChild(subtaskCheckbox);
+    subtaskItem.appendChild(subtaskInput);
+    subtaskList.appendChild(subtaskItem);
+  }
+  function addImportantTask() {
+  const importantTasksList = document.getElementById('important-tasks-list');
+
+  // Criação da div que irá conter a nova tarefa
+  const taskDiv = document.createElement('div');
+  taskDiv.classList.add('important-task-item');
+
+  // Checkbox
+  const taskCheckbox = document.createElement('input');
+  taskCheckbox.type = 'checkbox';
+  taskDiv.appendChild(taskCheckbox);
+
+  // Input para inserir a tarefa
+  const taskInput = document.createElement('input');
+  taskInput.type = 'text';
+  taskInput.placeholder = 'Enter important task';
+  taskDiv.appendChild(taskInput);
+
+  // Botão para excluir a tarefa
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'Delete';
+  deleteBtn.onclick = function () {
+    taskDiv.remove(); // Remove a tarefa da lista
+  };
+  taskDiv.appendChild(deleteBtn);
+
+  // Adiciona a nova tarefa à lista
+  importantTasksList.appendChild(taskDiv);
+}
+
+
+  function saveTasks() {
+    const taskContainer = document.getElementById('task-container');
+    const tasks = [];
+
+    const taskItems = taskContainer.getElementsByClassName('task-item');
+    for (let taskItem of taskItems) {
+      const time = taskItem.querySelector('input[type="time"]').value;
+      const endTime = taskItem.querySelectorAll('input[type="time"]')[1].value;
+      const taskName = taskItem.querySelector('input[type="text"]').value;
+      const importance = taskItem.querySelector('input[type="number"]').value;
+
+      const subtasks = [];
+      const subtaskItems = taskItem.querySelectorAll('.subtask-list li');
+      subtaskItems.forEach(subtaskItem => {
+        const subtaskText = subtaskItem.querySelector('input[type="text"]').value;
+        const subtaskCompleted = subtaskItem.querySelector('input[type="checkbox"]').checked;
+        subtasks.push({ text: subtaskText, completed: subtaskCompleted });
+      });
+
+      tasks.push({ time, endTime, task: taskName, importance, subtasks });
+    }
+
+    weekTasks[currentDay] = tasks;
+    localStorage.setItem('weekTasks', JSON.stringify(weekTasks));
+    alert("Tasks saved successfully!");
+
+    function saveImportantTasks() {
+  const importantTasksList = document.getElementById('important-tasks-list');
+  const importantTasks = [];
+
+  const importantTaskItems = importantTasksList.getElementsByClassName('important-task-item');
+  for (let taskItem of importantTaskItems) {
+    const taskText = taskItem.querySelector('input[type="text"]').value;
+    const taskCompleted = taskItem.querySelector('input[type="checkbox"]').checked;
+    importantTasks.push({ task: taskText, completed: taskCompleted });
+  }
+
+  localStorage.setItem('importantTasks', JSON.stringify(importantTasks));
+  alert("Important Tasks saved successfully!");
+}
+
+  }
+
+  function loadTasks() {
+    const taskContainer = document.getElementById('task-container');
+    taskContainer.innerHTML = '';
+
+    const savedTasks = JSON.parse(localStorage.getItem('weekTasks')) || {};
+    const tasksForDay = savedTasks[currentDay] || [];
+
+    tasksForDay.forEach(task => {
+      addTask(task.time, task.endTime, task.task, task.importance, task.subtasks);
+    });
+  }
+
+  // Load tasks on page load
+  window.onload = function () {
+    const savedWeekTasks = JSON.parse(localStorage.getItem('weekTasks')) || {};
+    Object.assign(weekTasks, savedWeekTasks);
+    loadTasks();
+  };
+
+  function loadTasks() {
+    const taskContainer = document.getElementById('task-container');
+    taskContainer.innerHTML = '';
+
+    const savedTasks = JSON.parse(localStorage.getItem('weekTasks')) || {};
+    const tasksForDay = savedTasks[currentDay] || [];
+
+    tasksForDay.forEach(task => {
+      // Aqui você precisa passar os parâmetros na ordem correta
+      addTask(task.time, task.endTime, task.task, task.subtasks, task.importance);
+    });
+
+    function loadImportantTasks() {
+  const importantTasksList = document.getElementById('important-tasks-list');
+  importantTasksList.innerHTML = '';
+
+  const savedImportantTasks = JSON.parse(localStorage.getItem('importantTasks')) || [];
+  savedImportantTasks.forEach(task => {
+    const taskDiv = document.createElement('div');
+    taskDiv.classList.add('important-task-item');
+
+    const taskCheckbox = document.createElement('input');
+    taskCheckbox.type = 'checkbox';
+    taskCheckbox.checked = task.completed;
+    taskDiv.appendChild(taskCheckbox);
+
+    const taskInput = document.createElement('input');
+    taskInput.type = 'text';
+    taskInput.value = task.task;
+    taskDiv.appendChild(taskInput);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.onclick = function () {
+      taskDiv.remove();
+    };
+    taskDiv.appendChild(deleteBtn);
+
+    importantTasksList.appendChild(taskDiv);
+  });
+}
+}
+
+
+</script>
+
+</body>
+</html>

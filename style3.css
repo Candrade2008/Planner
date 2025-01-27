@@ -1,0 +1,256 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.planner-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.daily-planner, .week-planner {
+    background-color: #F5F5F3;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 25px;
+    border-radius: 8px;
+}
+
+.week-planner {
+    min-width: 200px;
+    text-align: center;
+}
+
+.daily-planner {
+    flex-grow: 1;
+}
+
+
+
+
+h1 {
+    text-align: center;
+    color: #B1827A;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    background-color: #EECEC1;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #B1827A;
+    border-radius: 5px;
+}
+
+
+/* Time input styling */
+.task-item input[type="time"] {
+    margin-right: 10px;
+    background-color: #B1827A;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #B1827A;
+    color: #F5F5F3;
+}
+
+/* Row for the time inputs */
+.time-row {
+    
+    display: 25%;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Importance input styling */
+.importance-input {
+    width: 50px;
+    text-align: right;
+    background-color: #B1827A;
+    color: #F5F5F3;
+    color: #F5F5F3;
+}
+
+/* Task and checkbox row */
+.task-row {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 15PX;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: grey;
+}
+
+/* Checkbox spacing */
+.task-row input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Task input styling */
+.task-item input[type="text"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #B1827A;
+    flex-grow: 1; /* Allow task title to expand in width */
+    height: 17px;
+    min-width: 200px;
+}
+
+/* Subtask list styling */
+.subtask-list {
+    list-style-type: none;
+    padding-left: 20px;
+    margin: 20px;
+}
+
+.subtask-list li.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* Button styling */
+button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #5F494E;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 35px;
+}
+
+button:hover {
+    background-color: #B1827A;
+}
+
+/* Full-width button styling */
+.add-task-btn {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.week-planner button {
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    
+    
+}
+
+
+.save-btn {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #89A8AE;
+}
+
+/* Importance input container (positioning the importance marker) */
+.importance-div {
+    position: relative;
+    float: right;
+    top: -40px; /* Adjust to move the importance input near the time row */
+    color: #F5F5F3;
+    
+}
+.importance-input {
+    margin-right: 10px;
+    background-color: #B1827A;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #B1827A;
+    color: #F5F5F3;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .delete-btn {
+    float: right;
+    color: #F5F5F3;
+    height: 30px;
+    margin-top: 15px;
+  }
+.subtask-btn {
+    color: #F5F5F3;
+    height: 30px;
+    margin-top: 15px;
+}
+  .week-days {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Empilhar os botões verticalmente */
+}
+
+.week-days button {
+    margin: 5px 0; /* Espaçamento entre os botões */
+    padding: 10px;
+    width: 100%; /* Faz os botões ocuparem toda a largura */
+    background-color: #5F494E;
+    color: white;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.week-days button:hover {
+    background-color: #89A8AE; /* Mudança na cor do botão ao passar o mouse */
+}
+
+/* Tarefas importantes */
+h2 {
+    color: #B1827A;
+}
+.important-tasks-container {
+    margin-top: 20px;
+  }
+  
+  .important-task-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .important-task-item input[type="text"] {
+    margin-right: 10px;
+    background-color: #EECEC1;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #B1827A;
+    color: #5F494E;
+    flex: 1;
+  }
+  
+  .important-task-item button {
+    float: right;
+    color: #F5F5F3;
+    height: 25px;
+    margin-top: 3px;
+    background-color: #5F494E;
+    margin-bottom: 3px;
+    padding: 5px;
+
+  }
+ 
+.delete-btn:hover {
+    background-color: #a62a2a;
+}
+  .important-task-item button:hover {
+    background-color: #a62a2a;
+  }
+  
